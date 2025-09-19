@@ -3,13 +3,15 @@ module gallery::access;
 use gallery::admin::GalleryData;
 use sui::coin::{Self, Coin};
 use sui::sui::SUI;
+use sui::transfer;
+use sui::tx_context::{Self, TxContext};
 
-public fun payAcess(gallery: &mut GalleryData, mut payment: Coin<SUI>, ctx: &mut TxContext) {
-    assert!(coin::value<SUI>(&payment) >= gallery::admin::get_fee(gallery), 1);
+public fun payAccess(gallery: &mut GalleryData, mut payment: Coin<SUI>, ctx: &mut TxContext) {
+    assert!(coin::value(&payment) >= gallery.get_fee(), 1);
 
-    let mut amount = coin::split<SUI>(&mut payment, gallery::admin::get_fee(gallery), ctx);
+    let mut amount = coin::split<SUI>(&mut payment, gallery.get_fee(), ctx);
 
-    gallery::admin::handle_payment(gallery, amount, ctx);
+    gallery.handle_payment(amount, ctx);
 
     if (coin::value<SUI>(&payment) > 0) {
         transfer::public_transfer(payment, tx_context::sender(ctx));

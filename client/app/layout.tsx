@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "App SUI",
-  description: "Um App daora",
+  title: "App da SUI bootcamp",
+  description: "Um App pioneiro",
 };
 
 export default function RootLayout({
